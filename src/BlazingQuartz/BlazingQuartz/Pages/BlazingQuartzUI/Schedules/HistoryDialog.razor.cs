@@ -13,7 +13,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules;
 
 public partial class HistoryDialog : ComponentBase
 {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
     [Inject] private IDialogService DialogSvc { get; set; } = null!;
     [Inject] IExecutionLogService LogSvc { get; set; } = null!;
 
@@ -75,7 +75,7 @@ public partial class HistoryDialog : ComponentBase
         await GetMoreLogs();
     }
 
-    private void OnMoreDetails(ExecutionLog log, string title)
+    private async Task OnMoreDetails(ExecutionLog log, string title)
     {
             var options = new DialogOptions
             {
@@ -88,7 +88,7 @@ public partial class HistoryDialog : ComponentBase
             {
                 ["ExecutionLog"] = log
             };
-            var dlg = DialogSvc.Show<ExecutionDetailsDialog>(title, parameters, options);
+            var dlg = await DialogSvc.ShowAsync<ExecutionDetailsDialog>(title, parameters, options);
     }
 
     private string GetExecutionTime(ExecutionLog log)

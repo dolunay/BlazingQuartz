@@ -30,7 +30,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.History
         private IEnumerable<string> _triggerNames = Enumerable.Empty<string>();
         private IEnumerable<string> _triggerGroups = Enumerable.Empty<string>();
 
-        private async Task<TableData<ExecutionLog>> LoadExecutionLogs(TableState state)
+        private async Task<TableData<ExecutionLog>> LoadExecutionLogs(TableState state, CancellationToken cancellationToken)
         {
             PageMetadata pageMeta;
             if (pagedData == null)
@@ -95,7 +95,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.History
             }
         }
 
-        private void OnMoreDetails(ExecutionLog log, string title)
+        private async Task OnMoreDetails(ExecutionLog log, string title)
         {
             var options = new DialogOptions
             {
@@ -108,7 +108,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.History
             {
                 ["ExecutionLog"] = log
             };
-            DialogSvc.Show<ExecutionDetailsDialog>(title, parameters, options);
+            await DialogSvc.ShowAsync<ExecutionDetailsDialog>(title, parameters, options);
         }
 
         #region Filters

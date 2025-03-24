@@ -12,9 +12,9 @@
     </MudDrawerHeader>
     <MudDrawerContainer>
         <div class="d-flex flex-column px-4 gap-2">
-            <MudCheckBox Checked="@_filter.IncludeSystemJobs"
+            <MudCheckBox Value="@_filter.IncludeSystemJobs"
                          T="bool"
-                         CheckedChanged="OnIncludeSystemJobsChanged"
+                         ValueChanged="OnIncludeSystemJobsChanged"
                          Label="Show BlazingQuartz jobs" Color="Color.Primary"></MudCheckBox>
         </div>
         <div class="d-flex pa-4 justify-space-between gap-2">
@@ -58,7 +58,7 @@
     <MudDataGrid @ref="_scheduleDataGrid"
                     MultiSelection="true" Items="@ScheduledJobs" Filterable="false"
                     ShowColumnOptions="false" SortMode="SortMode.None"
-                    RowStyleFunc="@_scheduleRowStyleFunc"
+                    RowStyleFunc="@ScheduleRowStyleFunc"
                     Breakpoint="Breakpoint.None"
                     Hideable="true" Groupable="true" GroupExpanded="true">
         <ColGroup>
@@ -329,7 +329,7 @@
                             </div>
                         </MudMenuItem>
                         <MudMenuItem Disabled="@IsHistoryActionDisabled(context.Item)"
-                                        OnClick="@(() => OnJobHistory(context.Item))">
+                                        OnClick="@(async () => await OnJobHistory(context.Item))">
                             <div class="d-flex gap-1">
                                 <MudIcon Icon="@Icons.Material.Filled.ListAlt" Title="History"
                                             Size="Size.Small" />

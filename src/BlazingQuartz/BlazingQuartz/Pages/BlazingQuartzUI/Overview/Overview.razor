@@ -10,10 +10,10 @@
         <MudItem xs="12">
             <div class="d-flex justify-space-between">
                 <MudText Typo="Typo.h4">Overview</MudText>
-                <MudSwitch Checked="AutoRefresh" Label="Auto Refresh"
+                <MudSwitch Value="AutoRefresh" Label="Auto Refresh"
                            T="bool"
-                           LabelPosition="LabelPosition.Start"
-                           CheckedChanged="OnCheckAutoRefresh"
+                           LabelPlacement="Placement.Start"
+                           ValueChanged="OnCheckAutoRefresh"
                            Color="Color.Primary" UnCheckedColor="Color.Secondary" />
             </div>
         </MudItem>
@@ -208,7 +208,7 @@
                                                 Class="pa-0 ma-0"
                                                 Style="text-transform:none;"
                                                 Size="Size.Small"
-                                                OnClick="@(() => OnMoreDetails(context, "Error Details"))"
+                                                OnClick="@(async () => await OnMoreDetails(context, "Error Details"))"
                                                 Color="Color.Primary">Error Details</MudButton>
                                     </div>
                                 }
@@ -219,7 +219,7 @@
                                                 Class="pa-0 ma-0"
                                                 Style="text-transform:none;"
                                                 Size="Size.Small"
-                                                OnClick="@(() => OnMoreDetails(context, "Execution Details"))"
+                                                OnClick="@(async () => await OnMoreDetails(context, "Execution Details"))"
                                                 Color="Color.Primary">Execution Details</MudButton>
                                     </div>
                                 }

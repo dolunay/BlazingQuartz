@@ -71,7 +71,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
         //     Selector = (e) => e.JobGroup
         // };
 
-        Func<ScheduleModel, object> _groupDefinition = x => 
+        Func<ScheduleModel, object> _groupDefinition = x =>
         {
             return x.JobGroup;
         };
@@ -178,7 +178,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                     _logger.LogWarning(ex, "Cannot update trigger status. Found more than one schedule with trigger {triggerKey}", triggerKey);
                     return;
                 }
-                
+
                 if (model is not null)
                 {
                     if (model.JobName == null || model.JobStatus == JobStatus.Error)
@@ -245,7 +245,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
 
         private async void SchedulerListenerSvc_OnJobScheduled(object? sender, EventArgs<ITrigger> e)
         {
-            if (!_filter.IncludeSystemJobs && (e.Args.JobKey.Group == Constants.SYSTEM_GROUP || 
+            if (!_filter.IncludeSystemJobs && (e.Args.JobKey.Group == Constants.SYSTEM_GROUP ||
                 e.Args.Key.Group == Constants.SYSTEM_GROUP))
             {
                 // system job is not visible, skip this event
@@ -296,7 +296,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
             ScheduledJobs.Clear();
 
             var jobs = SchedulerSvc.GetAllJobsAsync(_filter);
-            await foreach(var job in jobs)
+            await foreach (var job in jobs)
             {
                 ScheduledJobs.Add(job);
             }
@@ -335,11 +335,11 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                     {
                         schModel.ExceptionMessage = latestLog.GetShortExceptionMessage();
                     }
-                }   
+                }
             }
         }
 
-        private Func<ScheduleModel, int, string> _scheduleRowStyleFunc => (model, i) =>
+        private Func<ScheduleModel, int, string> ScheduleRowStyleFunc => (model, i) =>
         {
             if (model.JobStatus == JobStatus.NoSchedule ||
                 model.JobStatus == JobStatus.Error)
@@ -350,12 +350,13 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
 
         private async Task OnNewSchedule()
         {
-            var options = new DialogOptions {
+            var options = new DialogOptions
+            {
                 CloseOnEscapeKey = true,
                 FullWidth = true,
                 MaxWidth = MaxWidth.Medium
             };
-            var dlg = DialogSvc.Show<ScheduleDialog>("Create Schedule Job", options);
+            var dlg = await DialogSvc.ShowAsync<ScheduleDialog>("Create Schedule Job", options);
             var result = await dlg.Result;
 
             if (result == null || result.Canceled)
@@ -363,7 +364,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
 
             // create schedule
             (JobDetailModel jobDetail, TriggerDetailModel triggerDetail) = ((JobDetailModel, TriggerDetailModel))result.Data;
-            
+
             try
             {
                 await SchedulerSvc.CreateSchedule(jobDetail, triggerDetail);
@@ -418,7 +419,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                 ["JobDetail"] = currentJobDetail,
                 ["TriggerDetail"] = currentTriggerModel ?? new()
             };
-            var dlg = DialogSvc.Show<ScheduleDialog>("Edit Schedule Job", parameters, options);
+            var dlg = await DialogSvc.ShowAsync<ScheduleDialog>("Edit Schedule Job", parameters, options);
             var result = await dlg.Result;
 
             if (result == null || result.Canceled)
@@ -531,7 +532,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                 ["JobDetail"] = currentJobDetail,
                 ["TriggerDetail"] = currentTriggerModel ?? new()
             };
-            var dlg = DialogSvc.Show<ScheduleDialog>("Create Schedule Job", parameters, options);
+            var dlg = await DialogSvc.ShowAsync<ScheduleDialog>("Create Schedule Job", parameters, options);
             var result = await dlg.Result;
 
             if (result == null || result.Canceled)
@@ -542,7 +543,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
             await SchedulerSvc.CreateSchedule(jobDetail, triggerDetail);
         }
 
-        private void OnJobHistory(ScheduleModel model)
+        private async Task OnJobHistory(ScheduleModel model)
         {
             if (model.JobName == null)
             {
@@ -562,7 +563,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                 ["TriggerKey"] = model.TriggerName != null ?
                     new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null
             };
-            var dlg = DialogSvc.Show<HistoryDialog>("Execution History", parameters, options);
+            var dlg = await DialogSvc.ShowAsync<HistoryDialog>("Execution History", parameters, options);
         }
 
         private async Task OnTriggerNow(ScheduleModel model)
@@ -597,7 +598,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                 ["IsReadOnlyJobDetail"] = true,
                 ["SelectedTab"] = ScheduleDialogTab.Trigger
             };
-            var dlg = DialogSvc.Show<ScheduleDialog>("Add New Trigger", parameters, options);
+            var dlg = await DialogSvc.ShowAsync<ScheduleDialog>("Add New Trigger", parameters, options);
             var result = await dlg.Result;
 
             if (result == null || result.Canceled)
@@ -637,7 +638,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Schedules
                     skipCount++;
                     return Task.FromResult(true);
                 }
-                
+
                 ScheduledJobs.Remove(model);
                 return SchedulerSvc.DeleteSchedule(model);
             });

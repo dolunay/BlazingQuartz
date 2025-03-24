@@ -62,8 +62,11 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseBlazingQuartzUI();
-app.MapBlazorHub();
-app.MapFallbackToPage("/BlazingQuartzUI/_Host");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapBlazorHub();
+    endpoints.MapFallbackToPage("/BlazingQuartzUI/_Host");
+});
 
 app.Run();
 

@@ -48,7 +48,7 @@
                                     <MudButton Variant="Variant.Text"
                                             Class="pa-0 ma-0"
                                             Style="text-transform:none;"
-                                            OnClick="@(() => OnMoreDetails(log, "Error Details"))"
+                                            OnClick="@(async () => await OnMoreDetails(log, "Error Details"))"
                                             Color="Color.Primary">Error Details</MudButton>
                                 </ItemContent>
                             </MudTimelineItem>
@@ -74,7 +74,7 @@
                                     <MudButton Variant="Variant.Text"
                                             Class="pa-0 ma-0"
                                             Style="text-transform:none;"
-                                            OnClick="@(() => OnMoreDetails(log, "Execution Details"))"
+                                            OnClick="@(async () => await OnMoreDetails(log, "Execution Details"))"
                                             Color="Color.Primary">Execution Details</MudButton>
                                 }
                             </MudTimelineItem>

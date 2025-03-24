@@ -13,7 +13,7 @@ public partial class JobDataMapDialog : ComponentBase
 {
     [Inject]
     private IDialogService DialogSvc { get; set; } = null!;
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
     
     [Parameter]
     [EditorRequired]

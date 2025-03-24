@@ -51,7 +51,7 @@ namespace BlazingQuartz.Components
             OriginalJobKey = new(JobDetail.Name, JobDetail.Group);
         }
 
-        async Task<IEnumerable<string>> SearchJobGroup(string value)
+        async Task<IEnumerable<string>> SearchJobGroup(string value, CancellationToken cancellationToken)
         {
             if (ExistingJobGroups == null)
             {
@@ -76,7 +76,7 @@ namespace BlazingQuartz.Components
             if (IsValid == value)
                 return;
             IsValid = value;
-            IsValidChanged.InvokeAsync(value).AndForget();
+            IsValidChanged.InvokeAsync(value).CatchAndLog();
         }
 
         public async Task Validate()

@@ -56,13 +56,13 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Overview
 
         private static ChartOptions executionChartOptions = new ChartOptions
         {
-            ChartPalette = new string[] { Colors.Green.Lighten1, Colors.Red.Lighten1, Colors.Blue.Lighten1, Colors.Grey.Lighten1 },
+            ChartPalette = new string[] { Colors.Green.Lighten1, Colors.Red.Lighten1, Colors.Blue.Lighten1, Colors.Gray.Lighten1 },
         };
 
         private static ChartOptions emptyExecutionChartOptions = new ChartOptions
         {
-            ChartPalette = new string[] { Colors.Grey.Lighten1 },
-            DisableLegend = true
+            ChartPalette = new string[] { Colors.Gray.Lighten1 },
+            ShowLegend = false
         };
 
         private double[] TodaysLogData = EmptyData;
@@ -341,7 +341,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Overview
             SchedulerInfo.Add("Thread Pool Type", metadata.ThreadPoolType);
         }
 
-        private void OnMoreDetails(ExecutionLog log, string title)
+        private async Task OnMoreDetails(ExecutionLog log, string title)
         {
             var options = new DialogOptions
             {
@@ -354,7 +354,7 @@ namespace BlazingQuartz.Pages.BlazingQuartzUI.Overview
             {
                 ["ExecutionLog"] = log
             };
-            DialogSvc.Show<ExecutionDetailsDialog>(title, parameters, options);
+            await DialogSvc.ShowAsync<ExecutionDetailsDialog>(title, parameters, options);
         }
 
         public void Dispose()

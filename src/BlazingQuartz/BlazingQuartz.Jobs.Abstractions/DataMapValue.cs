@@ -53,8 +53,9 @@ namespace BlazingQuartz.Jobs.Abstractions
         {
             if (dataMapValue == null)
                 return null;
-
-            return JsonSerializer.Deserialize<DataMapValue>(dataMapValue);
+            if (dataMapValue.Contains("{{"))
+                return JsonSerializer.Deserialize<DataMapValue>(dataMapValue);
+            return new DataMapValue(DataMapValueType.InterpolatedString, dataMapValue, 1);
         }
 
         public static DataMapValue Create(object? dataMapValue, DataMapValueType defaultType,
